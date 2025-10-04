@@ -1,0 +1,12 @@
+{
+  "name": "altschool-todo",
+  "version": "1.0.0",
+  "description": "altschool todo app project",
+  "license": "ISC",
+  "author": "Ayodeji Ademide Nelson",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
