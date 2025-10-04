@@ -1,0 +1,113 @@
+<%- include('../partials/headers', { title: 'My Tasks', username: username }) %>
+
+<div class="container mt-4">
+  <% if (success && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <% } %> <% if (errors && errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= errors[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <% } %>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>My Tasks</h2>
+    <a href="/tasks/new" class="btn btn-primary">+ New Task</a>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div class="mb-3">
+    <a
+      href="/tasks"
+      class="btn btn-outline-secondary <%= currentFilter === 'all' ? 'active' : '' %>"
+      >All</a
+    >
+    <a
+      href="/tasks?status=pending"
+      class="btn btn-outline-warning <%= currentFilter === 'pending' ? 'active' : '' %>"
+      >Pending</a
+    >
+    <a
+      href="/tasks?status=completed"
+      class="btn btn-outline-success <%= currentFilter === 'completed' ? 'active' : '' %>"
+      >Completed</a
+    >
+  </div>
+
+  <!-- Tasks List -->
+  <% if (tasks.length === 0) { %>
+  <div class="text-center py-5">
+    <h4>No tasks found</h4>
+    <p class="text-muted">Get started by creating your first task!</p>
+    <a href="/tasks/new" class="btn btn-primary">Create Your First Task</a>
+  </div>
+  <% } else { %>
+  <div class="row">
+    <% tasks.forEach(task => { %>
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div
+        class="card task-card h-100 <%= task.status === 'completed' ? 'task-completed' : '' %>"
+      >
+        <div class="card-body">
+          <h5 class="card-title"><%= task.title %></h5>
+          <% if (task.description) { %>
+          <p class="card-text"><%= task.description %></p>
+          <% } %> <% if (task.dueDate) { %>
+          <p class="card-text">
+            <small class="text-muted">
+              Due: <%= new Date(task.dueDate).toLocaleDateString() %>
+            </small>
+          </p>
+          <% } %>
+          <div class="d-flex justify-content-between">
+            <% if (task.status === 'pending') { %>
+            <form
+              action="/tasks/<%= task._id %>/status"
+              method="POST"
+              class="d-inline"
+            >
+              <input type="hidden" name="status" value="completed" />
+              <button type="submit" class="btn btn-success btn-sm">
+                Mark Complete
+              </button>
+            </form>
+            <% } else if (task.status === 'completed') { %>
+            <form
+              action="/tasks/<%= task._id %>/status"
+              method="POST"
+              class="d-inline"
+            >
+              <input type="hidden" name="status" value="pending" />
+              <button type="submit" class="btn btn-warning btn-sm">
+                Mark Pending
+              </button>
+            </form>
+            <% } %>
+
+            <form
+              action="/tasks/<%= task._id %>/delete"
+              method="POST"
+              class="d-inline"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">
+            Created: <%= new Date(task.createdAt).toLocaleDateString() %> <% if
+            (task.status === 'completed') { %> | Completed: <%= new
+            Date(task.updatedAt).toLocaleDateString() %> <% } %>
+          </small>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } %>
+</div>

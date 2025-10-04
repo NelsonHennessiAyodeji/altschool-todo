@@ -1,0 +1,71 @@
+<%- include('../partials/headers', { title: 'Create New Task', username:
+username }) %>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">Create New Task</h4>
+        </div>
+        <div class="card-body">
+          <% if (errors && errors.length > 0) { %>
+          <div class="alert alert-danger"><%= errors[0] %></div>
+          <% } %>
+
+          <form action="/tasks" method="POST">
+            <div class="mb-3">
+              <label for="title" class="form-label">Task Title *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                value="<%= formData.title || '' %>"
+                maxlength="100"
+                required
+              />
+              <div class="form-text">
+                Enter a descriptive title for your task (max 100 characters).
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="3"
+                maxlength="500"
+              >
+<%= formData.description || '' %></textarea
+              >
+              <div class="form-text">
+                Optional description for your task (max 500 characters).
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="dueDate" class="form-label">Due Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="dueDate"
+                name="dueDate"
+                value="<%= formData.dueDate || '' %>"
+              />
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a href="/tasks" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">Create Task</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
