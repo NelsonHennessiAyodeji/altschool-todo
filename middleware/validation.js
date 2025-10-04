@@ -22,9 +22,13 @@ const loginValidation = (data) => {
 
 const taskValidation = (data) => {
   const schema = Joi.object({
-    title: Joi.string().max(100).required(),
+    title: Joi.string().max(100).required().messages({
+      "string.empty": "Task title is required",
+      "string.max": "Task title cannot exceed 100 characters",
+      "any.required": "Task title is required",
+    }),
     description: Joi.string().max(500).allow(""),
-    dueDate: Joi.date().optional(),
+    dueDate: Joi.date().optional().allow(""),
   });
 
   return schema.validate(data);

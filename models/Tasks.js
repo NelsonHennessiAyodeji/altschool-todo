@@ -12,6 +12,7 @@ const taskSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 500,
+      default: "",
     },
     status: {
       type: String,
@@ -20,6 +21,7 @@ const taskSchema = new mongoose.Schema(
     },
     dueDate: {
       type: Date,
+      default: null,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

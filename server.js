@@ -73,6 +73,23 @@ app.use((err, req, res, next) => {
   }
 });
 
+// Debug route
+app.get("/debug/tasks", async (req, res) => {
+  if (!req.session.userId) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const tasks = await Task.find({ user: req.session.userId });
+    res.json({
+      userId: req.session.userId,
+      tasks: tasks,
+    });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).render("error/404", {
